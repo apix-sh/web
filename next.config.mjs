@@ -11,6 +11,11 @@ const config = {
         source: '/docs/:path*.mdx',
         destination: '/llms.mdx/docs/:path*',
       },
+      {
+        source: '/install',
+        destination:
+          'https://raw.githubusercontent.com/apix-sh/cli/main/scripts/install.sh',
+      },
     ];
   },
 };

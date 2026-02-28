@@ -1,0 +1,235 @@
+---
+title: Command Reference
+description: Complete reference for every apix command.
+---
+
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+## Discovery
+
+### `apix search`
+
+Search indexed APIs across sources using the registry.
+
+```bash
+apix search <query> [--source <name>] [--all-sources] [--no-auto-update]
+```
+
+<Tabs items={['Example', 'Options']}>
+  <Tab value="Example">
+    ```bash
+    apix search "payment processing"
+    apix search stripe --source core
+    ```
+  </Tab>
+  <Tab value="Options">
+    | Flag | Description |
+    | :--- | :--- |
+    | `--source <name>` | Search within a specific source |
+    | `--all-sources` | Search across all configured sources |
+    | `--no-auto-update` | Skip automatic registry refresh |
+  </Tab>
+</Tabs>
+
+### `apix update`
+
+Sync local registry metadata from remote sources.
+
+```bash
+apix update [--source <name>] [--all-sources]
+```
+
+### `apix pull`
+
+Sparse-checkout a namespace from a source into the local vault.
+
+```bash
+apix pull <namespace> [--source <name>]
+```
+
+```bash
+apix pull openai
+apix pull stripe --source core
+```
+
+## Navigation
+
+### `apix ls`
+
+List local inventory — namespaces, versions, or detailed routes.
+
+```bash
+apix ls [namespace|namespace/version] [--source <name>]
+```
+
+<Tabs items={['Namespaces', 'Versions', 'Routes']}>
+  <Tab value="Namespaces">
+    ```bash
+    apix ls
+    apix ls --source .local
+    ```
+  </Tab>
+  <Tab value="Versions">
+    ```bash
+    apix ls stripe
+    ```
+  </Tab>
+  <Tab value="Routes">
+    ```bash
+    apix ls stripe/v1
+    ```
+
+    Shows paths and methods with one-line summaries.
+  </Tab>
+</Tabs>
+
+### `apix show`
+
+Print the full markdown document for a route or type.
+
+```bash
+apix show <route> [--source <name>]
+```
+
+```bash
+apix show stripe/v1/charges/POST
+```
+
+### `apix peek`
+
+Print frontmatter and required parameters only — minimal context for quick decisions.
+
+```bash
+apix peek <route> [--source <name>]
+```
+
+```bash
+apix peek openai/v1/chat/completions/POST
+```
+
+### `apix grep`
+
+Full-text search within a namespace's markdown files.
+
+```bash
+apix grep <namespace> <query> [--limit N] [--source <name>]
+```
+
+```bash
+apix grep stripe refund --limit 10
+```
+
+## Execution
+
+### `apix call`
+
+Execute an HTTP request resolved from a route's frontmatter.
+
+```bash
+apix call <route> [OPTIONS] [--source <name>]
+```
+
+<Tabs items={['Basic', 'With flags', 'Body from file']}>
+  <Tab value="Basic">
+    ```bash
+    apix call petstore/v1/pets/GET
+    ```
+
+    Path parameters can be inlined:
+
+    ```bash
+    apix call petstore/v1/pets/pet_123/GET
+    ```
+  </Tab>
+  <Tab value="With flags">
+    ```bash
+    apix call stripe/v1/charges/POST \
+      -p id=ch_123 \
+      -q expand=full \
+      -H "Authorization: Bearer $KEY" \
+      -d '{"amount":2000}'
+    ```
+
+    | Flag | Description |
+    | :--- | :--- |
+    | `-p key=val` | Path parameter |
+    | `-q key=val` | Query parameter |
+    | `-H "Header: val"` | HTTP header |
+    | `-d '<json>'` | Request body |
+  </Tab>
+  <Tab value="Body from file">
+    ```bash
+    apix call demo/v1/items/POST -d @payload.json
+    ```
+
+    Or from stdin:
+
+    ```bash
+    echo '{"name":"item"}' | apix call demo/v1/items/POST -d @-
+    ```
+  </Tab>
+</Tabs>
+
+## Management
+
+### `apix import`
+
+Generate vault files from an OpenAPI spec.
+
+```bash
+apix import <source> --name <namespace> [--output <vault_root>] [--overwrite]
+```
+
+```bash
+apix import ./petstore.json --name petstore
+apix import https://api.example.com/openapi.json --name example
+```
+
+### `apix init`
+
+Create the `~/.apix` directory structure and default config.
+
+```bash
+apix init
+```
+
+### `apix source`
+
+Manage third-party sources.
+
+```bash
+apix source add <name> --remote <url>
+apix source remove <name>
+apix source list
+```
+
+### `apix registry rebuild`
+
+Rebuild the registry index for a source or vault path.
+
+```bash
+apix registry rebuild [--source <name>] [--path <vault_root>]
+```
+
+### `apix completions`
+
+Generate shell completions.
+
+```bash
+apix completions <bash|zsh|fish|elvish|powershell>
+```
+
+## Output Behavior
+
+<Callout title="TTY vs pipe">
+  apix auto-detects the output environment. In a terminal, markdown is rendered
+  with colors and paging. When piped, raw markdown is emitted for machine
+  consumption.
+</Callout>
+
+| Flag | Description |
+| :--- | :--- |
+| `--raw` | Force raw markdown in TTY mode |
+| `--no-color` | Disable color output (also `NO_COLOR=1`) |
+| `--no-pager` | Disable automatic paging |

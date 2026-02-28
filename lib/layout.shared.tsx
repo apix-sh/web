@@ -1,17 +1,36 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 
-// fill this with your actual GitHub info, for example:
 export const gitConfig = {
-  user: 'fuma-nama',
-  repo: 'fumadocs',
+  user: 'apix-sh',
+  repo: 'cli',
   branch: 'main',
 };
 
-export function baseOptions(): BaseLayoutProps {
+const shared: BaseLayoutProps = {
+  nav: {
+    title: 'apix',
+  },
+  githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
+  themeSwitch: {
+    mode: 'light-dark-system',
+  },
+};
+
+export function homeOptions(): BaseLayoutProps {
   return {
-    nav: {
-      title: 'My App',
-    },
-    githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
+    ...shared,
+    links: [
+      { text: 'Concepts', url: '/docs/concepts' },
+      { text: 'Docs', url: '/docs' },
+    ],
+  };
+}
+
+export function docsOptions(): BaseLayoutProps {
+  return {
+    ...shared,
+    links: [
+      { text: 'Home', url: '/' },
+    ],
   };
 }

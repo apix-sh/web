@@ -1,3 +1,17 @@
 @import 'tailwindcss';
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
+
+:root {
+  --font-sans: 'IBM Plex Mono', monospace;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+.fd-step {
+  padding-bottom: 1.5rem;
+}
+
+#faq .prose-no-margin {
+  padding-bottom: 1rem !important;
+  font-size: 0.8125rem !important;
+}

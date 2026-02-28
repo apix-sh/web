@@ -1,0 +1,111 @@
+---
+title: Core Concepts
+description: Vaults, sources, routes, and the progressive disclosure model.
+---
+
+import { Files, Folder, File } from 'fumadocs-ui/components/files';
+import { Callout } from 'fumadocs-ui/components/callout';
+
+## The Problem
+
+Most API documentation today lives on the web — interactive pages designed for humans browsing with a mouse. For agents operating in a terminal, this is an obstacle: they would need to scrape HTML, navigate JavaScript-rendered pages, and parse unstructured content. Raw OpenAPI specs avoid the web but introduce a different problem — they are massive JSON blobs that flood LLM context windows and degrade reasoning quality.
+
+apix takes a different approach: it converts API specs into **plain markdown files on your local filesystem**. Agents can explore them with standard file and shell tools (`ls`, `cat`, `grep`) or use apix's built-in commands for structured, progressive discovery.
+
+## The Vault
+
+A **vault** is a directory of markdown files generated from an OpenAPI spec. Each endpoint becomes a standalone `.md` file with YAML frontmatter for machine execution and markdown body for human/LLM reading.
+
+<Files>
+  <Folder name="~/.apix/vaults" defaultOpen>
+    <Folder name=".local" defaultOpen>
+      <Folder name="petstore">
+        <Folder name="v1">
+          <File name="_metadata.md" />
+          <Folder name="_types">
+            <File name="Pet.md" />
+            <File name="Error.md" />
+          </Folder>
+          <Folder name="pets">
+            <File name="GET.md" />
+            <File name="POST.md" />
+            <Folder name="{petId}">
+              <File name="GET.md" />
+            </Folder>
+          </Folder>
+        </Folder>
+      </Folder>
+    </Folder>
+    <Folder name="core">
+      <File name="registry.json" />
+      <Folder name="stripe">
+        <Folder name="v1">
+          <File name="_metadata.md" />
+          <File name="..." />
+        </Folder>
+      </Folder>
+    </Folder>
+  </Folder>
+</Files>
+
+### File anatomy
+
+Each route file (e.g., `POST.md`) is a hybrid document:
+
+- **YAML frontmatter** — execution metadata (`method`, `url`, `auth`, `content_type`) used by `apix call`
+- **Markdown body** — token-optimized parameter tables, descriptions, and type references for agents and humans
+
+Shared schemas live in the `_types/` directory. Route files reference them with markdown links, enforcing progressive disclosure instead of inlining everything.
+
+## Sources
+
+apix organizes vaults into **sources** — isolated namespaces with independent registries:
+
+| Source | Purpose | Location |
+| :--- | :--- | :--- |
+| `.local` | APIs you import yourself | `~/.apix/vaults/.local/` |
+| `core` | The public curated registry | `~/.apix/vaults/core/` |
+| Custom | Third-party registries | `~/.apix/vaults/<name>/` |
+
+When you run a command without `--source`, apix resolves from sources in priority order: `.local` → `core` → third-party. If a route exists in multiple sources, apix asks you to disambiguate.
+
+## Routes
+
+A route is a slash-separated path that uniquely identifies an API endpoint:
+
+```text
+<namespace>/<version>/<path segments>/<METHOD>
+```
+
+Examples:
+
+```text
+stripe/v1/charges/POST
+openai/v1/chat/completions/POST
+petstore/v1/pets/{petId}/GET
+```
+
+You can prefix with a source name for explicit resolution:
+
+```text
+core/stripe/v1/charges/POST
+.local/petstore/v1/pets/GET
+```
+
+## Progressive Disclosure
+
+<Callout title="The key insight">
+  Agents shouldn't have to browse web docs or load an entire API spec upfront. They should progressively narrow context using local files: discover → list → peek → show → call.
+</Callout>
+
+The progressive disclosure loop maps to specific commands:
+
+| Stage | Command | Token cost |
+| :--- | :--- | :--- |
+| Discover | `apix search <query>` | Very low — registry index only |
+| List | `apix ls <namespace>/<version>` | Low — route summaries |
+| Peek | `apix peek <route>` | Medium — frontmatter + required params |
+| Inspect | `apix show <route>` | Higher — full markdown with all details |
+| Execute | `apix call <route>` | Zero — sends the HTTP request |
+
+At each stage, the agent gathers just enough context to decide whether to go deeper or move on. No wasted tokens.

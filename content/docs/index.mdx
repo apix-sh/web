@@ -1,13 +1,103 @@
 ---
-title: Hello World
-description: Your first document
+title: Getting Started
+description: Install apix and start exploring APIs in minutes.
 ---
 
-Welcome to the docs! You can start writing documents in `/content/docs`.
+import { Steps, Step } from 'fumadocs-ui/components/steps';
+import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
 
-## What is Next?
+## What is apix?
+
+apix is a Rust CLI that converts monolithic OpenAPI specs into a file-system-native markdown vault. It lets you discover, browse, search, and execute API calls — designed for both AI agents and human developers.
+
+<Callout title="Agent-native by design">
+  When piped, apix outputs raw markdown — optimized for LLM context windows.
+  Agents can follow the search → peek → call loop with minimal token overhead.
+</Callout>
+
+## Installation
+
+<Tabs items={['curl', 'Homebrew', 'Build from source']}>
+  <Tab value="curl">
+    ```bash
+    curl -fsSL https://apix.sh/install | sh
+    ```
+
+    Pin a specific version:
+
+    ```bash
+    curl -fsSL https://apix.sh/install | sh -s -- --version v0.1.0
+    ```
+  </Tab>
+  <Tab value="Homebrew">
+    ```bash
+    brew install apix-sh/apix/apix
+    ```
+  </Tab>
+  <Tab value="Build from source">
+    Requires Rust toolchain (`rustup`, `cargo`).
+
+    ```bash
+    cargo install apix
+    ```
+  </Tab>
+</Tabs>
+
+Verify the installation:
+
+```bash
+apix --version
+```
+
+## Quick Start
+
+<Steps>
+  <Step>
+    ### Search the registry
+
+    Find APIs matching your needs:
+
+    ```bash
+    apix search stripe
+    ```
+  </Step>
+  <Step>
+    ### Pull an API vault
+
+    Download only the API you need via sparse Git checkout:
+
+    ```bash
+    apix pull stripe
+    ```
+  </Step>
+  <Step>
+    ### Browse endpoints
+
+    List available routes and peek at parameters:
+
+    ```bash
+    apix ls stripe/v1
+    apix peek stripe/v1/charges/POST
+    ```
+  </Step>
+  <Step>
+    ### Make a call
+
+    Execute an API request directly:
+
+    ```bash
+    apix call stripe/v1/charges/POST \
+      -H "Authorization: Bearer $STRIPE_KEY" \
+      -d '{"amount":2000,"currency":"usd"}'
+    ```
+  </Step>
+</Steps>
+
+## Next Steps
 
 <Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.dev" />
+  <Card title="Core Concepts" href="/docs/concepts" description="Learn about vaults, sources, routes, and progressive disclosure." />
+  <Card title="Command Reference" href="/docs/commands" description="Full reference for every apix command." />
+  <Card title="Configuration" href="/docs/configuration" description="Customize apix behavior, sources, and environment." />
 </Cards>
