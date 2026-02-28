@@ -5,6 +5,22 @@
 :root {
   --font-sans: 'IBM Plex Mono', monospace;
   --font-mono: 'IBM Plex Mono', monospace;
+
+  --term-bg: #f5f5f5;
+  --term-fg: #1e1e2e;
+  --term-green: #40a02b;
+  --term-cyan: #179299;
+  --term-yellow: #df8e1d;
+  --term-dim: #8c8fa1;
+}
+
+.dark {
+  --term-bg: #1a1b26;
+  --term-fg: #c0caf5;
+  --term-green: #9ece6a;
+  --term-cyan: #7dcfff;
+  --term-yellow: #e0af68;
+  --term-dim: #565f89;
 }
 
 .fd-step {

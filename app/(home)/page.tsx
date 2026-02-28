@@ -4,6 +4,7 @@ import { Cards, Card } from 'fumadocs-ui/components/card';
 import { Steps, Step } from 'fumadocs-ui/components/steps';
 import { Accordions, Accordion } from 'fumadocs-ui/components/accordion';
 import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
+import { TerminalDemo } from '@/components/terminal-demo';
 import {
   Terminal,
   Search,
@@ -144,6 +145,8 @@ export default function HomePage() {
           The progressive discovery loop lets agents (and humans) gather context
           efficiently before executing API calls.
         </p>
+        <TerminalDemo />
+        <div className="mt-12" />
         <Steps>
           <Step>
             <h3 className="font-semibold mb-2 flex items-center gap-2">
@@ -167,14 +170,15 @@ export default function HomePage() {
           </Step>
           <Step>
             <h3 className="font-semibold mb-2 flex items-center gap-2">
-              <Eye className="size-4" />
-              Peek &amp; Show
+              <Search className="size-4" />
+              Grep, Peek &amp; Show
             </h3>
             <p className="text-fd-muted-foreground text-sm mb-3">
-              Peek for a quick summary of required parameters, or show for the
-              full endpoint documentation — progressive detail on demand.
+              Grep to locate endpoints by keyword, peek for a quick summary of
+              required parameters, or show for the full documentation —
+              progressive detail on demand.
             </p>
-            <DynamicCodeBlock lang="bash" code={`# condensed view — required params only\napix peek openai/v1/chat/completions/POST\n\n# full documentation\napix show openai/v1/chat/completions/POST`} />
+            <DynamicCodeBlock lang="bash" code={`# find endpoints matching a keyword\napix grep openai completions\n\n# condensed view — required params only\napix peek openai/v1/chat/completions/POST\n\n# full documentation\napix show openai/v1/chat/completions/POST`} />
             <p className="text-fd-muted-foreground text-xs mt-3">
               Since the vault is just local files, agents can also use native
               unix tools (<code className="bg-fd-secondary px-1 py-0.5 rounded">ls</code>,{' '}
