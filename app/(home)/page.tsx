@@ -1,10 +1,10 @@
-import Link from 'next/link';
-import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
-import { Cards, Card } from 'fumadocs-ui/components/card';
-import { Steps, Step } from 'fumadocs-ui/components/steps';
-import { Accordions, Accordion } from 'fumadocs-ui/components/accordion';
-import { DynamicCodeBlock } from 'fumadocs-ui/components/dynamic-codeblock';
-import { TerminalDemo } from '@/components/terminal-demo';
+import Link from "next/link";
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Cards, Card } from "fumadocs-ui/components/card";
+import { Steps, Step } from "fumadocs-ui/components/steps";
+import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
+import { DynamicCodeBlock } from "fumadocs-ui/components/dynamic-codeblock";
+import { TerminalDemo } from "@/components/terminal-demo";
 import {
   Terminal,
   Search,
@@ -14,7 +14,7 @@ import {
   Bot,
   Layers,
   ExternalLink,
-} from 'lucide-react';
+} from "lucide-react";
 
 export default function HomePage() {
   return (
@@ -33,13 +33,15 @@ export default function HomePage() {
 ██║  ██║██║     ██║██╔╝ ██╗
 ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝`}
         </pre>
-        <h1 className="sr-only text-5xl sm:text-6xl font-bold tracking-tight">apix</h1>
+        <h1 className="sr-only text-5xl sm:text-6xl font-bold tracking-tight">
+          apix
+        </h1>
         <p className="text-xl sm:text-2xl font-medium text-fd-foreground">
           API Explorer for Agents (and Humans)
         </p>
         <p className="text-fd-muted-foreground text-base max-w-xl">
-          Local-first, progressive disclosure API discovery and browsing CLI
-          for the agentic era.
+          Local-first, progressive disclosure API discovery and browsing CLI for
+          the agentic era.
         </p>
 
         <div className="flex flex-row gap-3 mt-2">
@@ -64,7 +66,10 @@ export default function HomePage() {
           <DynamicCodeBlock
             lang="bash"
             code="curl -fsSL https://apix.sh/install | sh"
-            codeblock={{ title: 'Quick install', icon: <Terminal className="size-4" /> }}
+            codeblock={{
+              title: "Quick install",
+              icon: <Terminal className="size-4" />,
+            }}
           />
         </div>
       </section>
@@ -72,28 +77,40 @@ export default function HomePage() {
       {/* Install */}
       <section className="w-full max-w-3xl mx-auto px-6 py-12">
         <h2 className="text-2xl font-bold mb-6 text-center">Install</h2>
-        <Tabs items={['curl', 'Homebrew', 'Build from source']}>
+        <Tabs items={["curl", "Homebrew", "Build from source"]}>
           <Tab value="curl">
             <div className="flex flex-col gap-4 text-sm">
               <div>
                 <p className="mb-2 text-fd-muted-foreground">Latest release:</p>
-                <DynamicCodeBlock lang="bash" code="curl -fsSL https://apix.sh/install | sh" />
+                <DynamicCodeBlock
+                  lang="bash"
+                  code="curl -fsSL https://apix.sh/install | sh"
+                />
               </div>
               <div>
                 <p className="mb-2 text-fd-muted-foreground">
                   Pin a specific version:
                 </p>
-                <DynamicCodeBlock lang="bash" code="curl -fsSL https://apix.sh/install | sh -s -- --version v0.1.0" />
+                <DynamicCodeBlock
+                  lang="bash"
+                  code="curl -fsSL https://apix.sh/install | sh -s -- --version v0.1.0"
+                />
               </div>
             </div>
           </Tab>
           <Tab value="Homebrew">
             <div className="flex flex-col gap-4 text-sm">
-              <DynamicCodeBlock lang="bash" code="brew install apix-sh/apix/apix" />
+              <DynamicCodeBlock
+                lang="bash"
+                code="brew install apix-sh/apix/apix"
+              />
               <p className="text-fd-muted-foreground">
                 Or tap first, then install:
               </p>
-              <DynamicCodeBlock lang="bash" code={`brew tap apix-sh/apix\nbrew install apix`} />
+              <DynamicCodeBlock
+                lang="bash"
+                code={`brew tap apix-sh/apix\nbrew install apix`}
+              />
             </div>
           </Tab>
           <Tab value="Build from source">
@@ -105,12 +122,15 @@ export default function HomePage() {
               <p className="text-fd-muted-foreground">
                 Or clone and build manually:
               </p>
-              <DynamicCodeBlock lang="bash" code={`git clone https://github.com/apix-sh/cli.git\ncd cli\ncargo build --release`} />
+              <DynamicCodeBlock
+                lang="bash"
+                code={`git clone https://github.com/apix-sh/cli.git\ncd cli\ncargo build --release`}
+              />
             </div>
           </Tab>
         </Tabs>
         <p className="text-sm text-fd-muted-foreground mt-4 text-center">
-          Verify your install:{' '}
+          Verify your install:{" "}
           <code className="bg-fd-secondary px-1.5 py-0.5 rounded">
             apix --version
           </code>
@@ -168,7 +188,10 @@ export default function HomePage() {
             <p className="text-fd-muted-foreground text-sm mb-3">
               Search the registry for APIs matching your needs.
             </p>
-            <DynamicCodeBlock lang="bash" code='apix search "audio generation"' />
+            <DynamicCodeBlock
+              lang="bash"
+              code='apix search "audio generation"'
+            />
           </Step>
           <Step>
             <h3 className="font-semibold mb-2 flex items-center gap-2">
@@ -190,12 +213,16 @@ export default function HomePage() {
               required parameters, or show for the full documentation —
               progressive detail on demand.
             </p>
-            <DynamicCodeBlock lang="bash" code={`# find endpoints matching a keyword\napix grep openai completions\n\n# condensed view — required params only\napix peek openai/v1/chat/completions/POST\n\n# full documentation\napix show openai/v1/chat/completions/POST`} />
+            <DynamicCodeBlock
+              lang="bash"
+              code={`# find endpoints matching a keyword\napix grep openai completions\n\n# condensed view — required params only\napix peek openai/v1/chat/completions/POST\n\n# full documentation\napix show openai/v1/chat/completions/POST`}
+            />
             <p className="text-fd-muted-foreground text-xs mt-3">
               Since the vault is just local files, agents can also use native
-              Unix tools (<code className="bg-fd-secondary px-1 py-0.5 rounded">ls</code>,{' '}
-              <code className="bg-fd-secondary px-1 py-0.5 rounded">find</code>,{' '}
-              <code className="bg-fd-secondary px-1 py-0.5 rounded">grep</code>,{' '}
+              Unix tools (
+              <code className="bg-fd-secondary px-1 py-0.5 rounded">ls</code>,{" "}
+              <code className="bg-fd-secondary px-1 py-0.5 rounded">find</code>,{" "}
+              <code className="bg-fd-secondary px-1 py-0.5 rounded">grep</code>,{" "}
               etc.) to explore the vault directly.
             </p>
           </Step>
@@ -205,9 +232,13 @@ export default function HomePage() {
               Call
             </h3>
             <p className="text-fd-muted-foreground text-sm mb-3">
-              Execute the HTTP call directly from the route (with cURL-compatible arguments).
+              Execute the HTTP call directly from the route (with
+              cURL-compatible arguments).
             </p>
-            <DynamicCodeBlock lang="bash" code={`apix call openai/v1/chat/completions/POST \\\n  -H "Authorization: Bearer $OPENAI_API_KEY" \\\n  -d '{"model":"gpt-4","messages":[...]}'`} />
+            <DynamicCodeBlock
+              lang="bash"
+              code={`apix call openai/v1/chat/completions/POST \\\n  -H "Authorization: Bearer $OPENAI_API_KEY" \\\n  -d '{"model":"gpt-4","messages":[...]}'`}
+            />
           </Step>
         </Steps>
         <p className="text-center mt-8">
@@ -238,7 +269,7 @@ export default function HomePage() {
           </Accordion>
           <Accordion title="Does apix work with any API?">
             apix supports OpenAPI 3.0 and 3.1 specifications. You can import any
-            conforming spec with{' '}
+            conforming spec with{" "}
             <code className="bg-fd-secondary px-1.5 py-0.5 rounded text-sm">
               apix import
             </code>
@@ -246,38 +277,38 @@ export default function HomePage() {
             Stripe, OpenAI, GitHub, and more.
           </Accordion>
           <Accordion title="Can I use apix with AI agents like Claude or GPT?">
-            Yes. apix is specifically designed for agent-native workflows.
-            Piped output is raw markdown. Agents can use standard tool-use
-            patterns: search → peek → call. The progressive disclosure loop
-            keeps token usage minimal.
+            Yes. apix is specifically designed for agent-native workflows. Piped
+            output is raw markdown. Agents can use standard tool-use patterns:
+            search → peek → call. The progressive disclosure loop keeps token
+            usage minimal.
           </Accordion>
           <Accordion title="Is my API data sent anywhere?">
             No. apix is entirely local-first. Vault data lives on your
-            filesystem at{' '}
+            filesystem at{" "}
             <code className="bg-fd-secondary px-1.5 py-0.5 rounded text-sm">
               ~/.apix/vaults/
             </code>
             . The only network calls are Git fetches from the registry and your
-            own API calls via{' '}
+            own API calls via{" "}
             <code className="bg-fd-secondary px-1.5 py-0.5 rounded text-sm">
               apix call
             </code>
             .
           </Accordion>
           <Accordion title="How do I add my own API?">
-            Use{' '}
+            Use{" "}
             <code className="bg-fd-secondary px-1.5 py-0.5 rounded text-sm">
               apix import &lt;spec&gt; --name &lt;namespace&gt;
-            </code>{' '}
-            to ingest any OpenAPI spec file or URL. The generated vault is stored
-            locally and immediately searchable. You can also contribute to the
-            public registry.
+            </code>{" "}
+            to ingest any OpenAPI spec file or URL. The generated vault is
+            stored locally and immediately searchable. You can also contribute
+            to the public registry.
           </Accordion>
           <Accordion title="Why does it not do X?">
             apix is in an early stage and actively evolving. We will keep
             iterating based on real-world usage. If you have suggestions or
             ideas, we welcome contributions and feedback from the community —
-            open an issue or PR on{' '}
+            open an issue or PR on{" "}
             <a
               href="https://github.com/apix-sh/cli"
               target="_blank"
@@ -293,7 +324,7 @@ export default function HomePage() {
 
       {/* Footer */}
       <footer className="w-full border-t border-fd-border py-8 text-center text-xs text-fd-muted-foreground">
-        An{' '}
+        An{" "}
         <a
           href="https://github.com/apix-sh/cli"
           target="_blank"
@@ -301,8 +332,8 @@ export default function HomePage() {
           className="underline hover:text-fd-foreground transition-colors"
         >
           open source
-        </a>{' '}
-        project by{' '}
+        </a>{" "}
+        project by{" "}
         <a
           href="https://x.com/_andydeng"
           target="_blank"
