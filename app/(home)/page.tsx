@@ -21,17 +21,15 @@ export default function HomePage() {
     <main className="flex flex-col items-center">
       {/* Hero */}
       <section className="flex flex-col items-center text-center px-6 pt-24 pb-16 max-w-3xl mx-auto gap-6">
-        <pre
-          className="font-mono text-[10px] sm:text-xs leading-tight select-none"
-          aria-hidden
-        >
+        <pre className="font-mono leading-none select-none" aria-hidden>
           {`
  █████╗ ██████╗ ██╗██╗  ██╗
 ██╔══██╗██╔══██╗██║╚██╗██╔╝
 ███████║██████╔╝██║ ╚███╔╝ 
 ██╔══██║██╔═══╝ ██║ ██╔██╗ 
 ██║  ██║██║     ██║██╔╝ ██╗
-╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝`}
+╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝
+`}
         </pre>
         <h1 className="sr-only text-5xl sm:text-6xl font-bold tracking-tight">
           apix

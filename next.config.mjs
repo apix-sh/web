@@ -1,4 +1,4 @@
-import { createMDX } from 'fumadocs-mdx/next';
+import { createMDX } from "fumadocs-mdx/next";
 
 const withMDX = createMDX();
 
@@ -8,13 +8,12 @@ const config = {
   async rewrites() {
     return [
       {
-        source: '/docs/:path*.mdx',
-        destination: '/llms.mdx/docs/:path*',
+        source: "/docs/:path*.mdx",
+        destination: "/llms.mdx/docs/:path*",
       },
       {
-        source: '/install',
-        destination:
-          'https://raw.githubusercontent.com/apix-sh/cli/main/scripts/install.sh',
+        source: "/install",
+        destination: "/install.sh",
       },
     ];
   },
