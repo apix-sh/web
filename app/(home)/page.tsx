@@ -118,7 +118,7 @@ export default function HomePage() {
               <p className="text-fd-muted-foreground">
                 Requires the Rust toolchain (rustup, cargo).
               </p>
-              <DynamicCodeBlock lang="bash" code="cargo install apix" />
+              <DynamicCodeBlock lang="bash" code="cargo install apix-cli" />
               <p className="text-fd-muted-foreground">
                 Or clone and build manually:
               </p>
