@@ -133,6 +133,58 @@ export default function HomePage() {
             apix --version
           </code>
         </p>
+
+        <div className="mt-12">
+          <h3 className="text-xl font-bold mb-4 text-center">
+            Install Agent Skill
+          </h3>
+          <p className="text-fd-muted-foreground text-center mb-6 text-sm">
+            Give your AI coding agents the ability to use apix directly in your
+            workspace.
+          </p>
+          <Tabs items={["skills.sh", "OpenClaw"]}>
+            <Tab value="skills.sh">
+              <div className="flex flex-col gap-2 text-sm">
+                <p className="text-fd-muted-foreground">
+                  Works with Cursor, Claude Code, Codex CLI, and more via{" "}
+                  <a
+                    href="https://skills.sh"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-fd-foreground transition-colors"
+                  >
+                    skills.sh
+                  </a>
+                  :
+                </p>
+                <DynamicCodeBlock
+                  lang="bash"
+                  code="npx skills add apix-sh/cli"
+                />
+              </div>
+            </Tab>
+            <Tab value="OpenClaw">
+              <div className="flex flex-col gap-2 text-sm">
+                <p className="text-fd-muted-foreground">
+                  Install via{" "}
+                  <a
+                    href="https://clawhub.ai"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-fd-foreground transition-colors"
+                  >
+                    ClawHub
+                  </a>
+                  :
+                </p>
+                <DynamicCodeBlock
+                  lang="bash"
+                  code="npx clawhub@latest install apix"
+                />
+              </div>
+            </Tab>
+          </Tabs>
+        </div>
       </section>
 
       {/* Why */}
