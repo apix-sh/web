@@ -21,7 +21,19 @@ export default function HomePage() {
     <main className="flex flex-col items-center">
       {/* Hero */}
       <section className="flex flex-col items-center text-center px-6 pt-24 pb-16 max-w-3xl mx-auto gap-6">
-        <h1 className="text-5xl sm:text-6xl font-bold tracking-tight">apix</h1>
+        <pre
+          className="font-mono text-[10px] sm:text-xs leading-tight select-none"
+          aria-hidden
+        >
+          {`
+ █████╗ ██████╗ ██╗██╗  ██╗
+██╔══██╗██╔══██╗██║╚██╗██╔╝
+███████║██████╔╝██║ ╚███╔╝ 
+██╔══██║██╔═══╝ ██║ ██╔██╗ 
+██║  ██║██║     ██║██╔╝ ██╗
+╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝`}
+        </pre>
+        <h1 className="sr-only text-5xl sm:text-6xl font-bold tracking-tight">apix</h1>
         <p className="text-xl sm:text-2xl font-medium text-fd-foreground">
           API Explorer for Agents (and Humans)
         </p>
@@ -123,12 +135,12 @@ export default function HomePage() {
           <Card
             icon={<HardDrive className="size-5" />}
             title="Local-First"
-            description="Git-backed vaults stored on your filesystem. Works offline, no cloud dependency."
+            description="Git-backed vaults stored on your filesystem. Works offline with no cloud dependency."
           />
           <Card
             icon={<Bot className="size-5" />}
             title="Agent-Native"
-            description="Plain markdown files on disk — no web browsing required. Agents use standard file and shell tools, no browser needed."
+            description="Plain markdown files on disk — no web browsing required. Agents use standard file and shell tools; no browser needed."
           />
           <Card
             icon={<Zap className="size-5" />}
@@ -181,7 +193,7 @@ export default function HomePage() {
             <DynamicCodeBlock lang="bash" code={`# find endpoints matching a keyword\napix grep openai completions\n\n# condensed view — required params only\napix peek openai/v1/chat/completions/POST\n\n# full documentation\napix show openai/v1/chat/completions/POST`} />
             <p className="text-fd-muted-foreground text-xs mt-3">
               Since the vault is just local files, agents can also use native
-              unix tools (<code className="bg-fd-secondary px-1 py-0.5 rounded">ls</code>,{' '}
+              Unix tools (<code className="bg-fd-secondary px-1 py-0.5 rounded">ls</code>,{' '}
               <code className="bg-fd-secondary px-1 py-0.5 rounded">find</code>,{' '}
               <code className="bg-fd-secondary px-1 py-0.5 rounded">grep</code>,{' '}
               etc.) to explore the vault directly.
@@ -193,11 +205,19 @@ export default function HomePage() {
               Call
             </h3>
             <p className="text-fd-muted-foreground text-sm mb-3">
-              Execute the HTTP call directly from the route (with cURL compatible arguments).
+              Execute the HTTP call directly from the route (with cURL-compatible arguments).
             </p>
             <DynamicCodeBlock lang="bash" code={`apix call openai/v1/chat/completions/POST \\\n  -H "Authorization: Bearer $OPENAI_API_KEY" \\\n  -d '{"model":"gpt-4","messages":[...]}'`} />
           </Step>
         </Steps>
+        <p className="text-center mt-8">
+          <Link
+            href="/docs/commands"
+            className="text-sm font-medium text-fd-foreground underline underline-offset-4 hover:text-fd-muted-foreground transition-colors"
+          >
+            Command reference →
+          </Link>
+        </p>
       </section>
 
       {/* FAQ */}
@@ -207,8 +227,8 @@ export default function HomePage() {
           <Accordion title="What is apix?">
             apix is a Rust CLI that converts monolithic OpenAPI specs into a
             file-system-native markdown vault. It lets you discover, browse,
-            search, and call APIs from your terminal — designed for both AI
-            agents and humans.
+            search, and call APIs from your terminal, and is designed for both
+            AI agents and humans.
           </Accordion>
           <Accordion title="How is this different from just reading OpenAPI specs?">
             Raw OpenAPI JSON/YAML files are often thousands of lines long. They
@@ -252,6 +272,21 @@ export default function HomePage() {
             to ingest any OpenAPI spec file or URL. The generated vault is stored
             locally and immediately searchable. You can also contribute to the
             public registry.
+          </Accordion>
+          <Accordion title="Why does it not do X?">
+            apix is in an early stage and actively evolving. We will keep
+            iterating based on real-world usage. If you have suggestions or
+            ideas, we welcome contributions and feedback from the community —
+            open an issue or PR on{' '}
+            <a
+              href="https://github.com/apix-sh/cli"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline hover:text-fd-foreground transition-colors"
+            >
+              GitHub
+            </a>
+            .
           </Accordion>
         </Accordions>
       </section>

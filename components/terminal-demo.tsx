@@ -117,7 +117,6 @@ export function TerminalDemo() {
   const [isTyping, setIsTyping] = useState(false);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const animatingRef = useRef(true);
 
   const isAtBottom = useCallback(() => {
     const el = containerRef.current;
@@ -134,6 +133,7 @@ export function TerminalDemo() {
   }, []);
 
   const shouldAutoScrollRef = useRef(true);
+  const maybeScrollRef = useRef<() => void>(() => {});
 
   const maybeScroll = useCallback(() => {
     requestAnimationFrame(() => {
@@ -148,6 +148,10 @@ export function TerminalDemo() {
       }
     });
   }, [scrollToBottom]);
+
+  useEffect(() => {
+    maybeScrollRef.current = maybeScroll;
+  }, [maybeScroll]);
 
   useEffect(() => {
     const el = containerRef.current;
@@ -176,44 +180,48 @@ export function TerminalDemo() {
   }, []);
 
   useEffect(() => {
-    animatingRef.current = true;
+    let cancelled = false;
 
     async function sleep(ms: number) {
       return new Promise((r) => setTimeout(r, ms));
     }
 
+    const scroll = () => maybeScrollRef.current();
+
     async function typeInput(text: string): Promise<void> {
       setIsTyping(true);
       for (let i = 0; i <= text.length; i++) {
-        if (!animatingRef.current) return;
+        if (cancelled) return;
         setTypingText(text.slice(0, i));
-        maybeScroll();
+        scroll();
         await sleep(TYPE_SPEED);
       }
+      if (cancelled) return;
       setIsTyping(false);
       setTypingText('');
       setDisplayedLines((prev) => [...prev, { text, type: 'input' }]);
-      maybeScroll();
+      scroll();
     }
 
     async function showOutputLines(lines: TerminalLine[]): Promise<void> {
       for (const line of lines) {
-        if (!animatingRef.current) return;
+        if (cancelled) return;
         setDisplayedLines((prev) => [...prev, line]);
-        maybeScroll();
+        scroll();
         await sleep(OUTPUT_LINE_DELAY);
       }
     }
 
     async function runAnimation() {
-      while (animatingRef.current) {
+      while (!cancelled) {
+        if (cancelled) return;
         setDisplayedLines([]);
         setTypingText('');
         shouldAutoScrollRef.current = true;
         setShowScrollIndicator(false);
 
         for (const step of steps) {
-          if (!animatingRef.current) return;
+          if (cancelled) return;
 
           const preInputBlanks: TerminalLine[] = [];
           for (const line of step.lines) {
@@ -235,12 +243,14 @@ export function TerminalDemo() {
           const outputAfterInput = afterInput.filter((l) => l.type !== 'input');
           await showOutputLines(outputAfterInput);
 
+          if (cancelled) return;
           setDisplayedLines((prev) => [...prev, { text: '', type: 'blank' }]);
-          maybeScroll();
+          scroll();
 
           await sleep(step.pauseAfter);
         }
 
+        if (cancelled) return;
         await sleep(RESTART_DELAY);
       }
     }
@@ -248,9 +258,9 @@ export function TerminalDemo() {
     runAnimation();
 
     return () => {
-      animatingRef.current = false;
+      cancelled = true;
     };
-  }, [maybeScroll]);
+  }, []);
 
   const lineColor = (type: TerminalLine['type']) => {
     switch (type) {
