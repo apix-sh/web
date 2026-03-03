@@ -100,14 +100,14 @@ export default function HomePage() {
             <div className="flex flex-col gap-4 text-sm">
               <DynamicCodeBlock
                 lang="bash"
-                code="brew install apix-sh/apix/apix"
+                code="brew install apix-sh/tap/apix"
               />
               <p className="text-fd-muted-foreground">
                 Or tap first, then install:
               </p>
               <DynamicCodeBlock
                 lang="bash"
-                code={`brew tap apix-sh/apix\nbrew install apix`}
+                code={`brew tap apix-sh/tap\nbrew install apix`}
               />
             </div>
           </Tab>
