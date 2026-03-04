@@ -1,11 +1,12 @@
-'use client';
+"use client";
 
-import { useEffect, useRef, useState, useCallback } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { useEffect, useRef, useState, useCallback } from "react";
+import { ChevronDown } from "lucide-react";
 
 interface TerminalLine {
   text: string;
-  type: 'input' | 'output' | 'info' | 'dim' | 'header' | 'blank';
+  type: "input" | "output" | "info" | "dim" | "header" | "blank" | "source";
+  element?: React.ReactNode;
 }
 
 interface TerminalStep {
@@ -17,91 +18,140 @@ const steps: TerminalStep[] = [
   {
     pauseAfter: 3000,
     lines: [
-      { text: '$ apix search "chat completions"', type: 'input' },
-      { text: '', type: 'blank' },
+      { text: '$ apix search "chat completions"', type: "input" },
+      { text: "", type: "blank" },
+      { text: "core", type: "source" },
       {
-        text: 'core       openai        OpenAI API                  v1       [ai,llm,chat]',
-        type: 'output',
+        text: "  openai (v1) [ai, chat, llm]",
+        type: "output",
+        element: (
+          <>
+            {"  "}
+            <span className="font-bold">openai</span> (v1) [ai, chat, llm]
+          </>
+        ),
       },
+      { text: "    OpenAI API", type: "output" },
       {
-        text: 'core       anthropic     Anthropic Messages API      v1       [ai,llm,chat]',
-        type: 'output',
+        text: "  anthropic (v1) [ai, chat, llm]",
+        type: "output",
+        element: (
+          <>
+            {"  "}
+            <span className="font-bold">anthropic</span> (v1) [ai, chat, llm]
+          </>
+        ),
       },
+      { text: "    Anthropic Messages API", type: "output" },
       {
-        text: 'core       groq          Groq Inference API          v1       [ai,llm,chat]',
-        type: 'output',
+        text: "  groq (v1) [ai, chat, llm]",
+        type: "output",
+        element: (
+          <>
+            {"  "}
+            <span className="font-bold">groq</span> (v1) [ai, chat, llm]
+          </>
+        ),
+      },
+      { text: "    Groq Inference API", type: "output" },
+    ],
+  },
+  {
+    pauseAfter: 3000,
+    lines: [
+      { text: "$ apix pull openai", type: "input" },
+      {
+        text: "ℹ Pulled `core/openai`: 128 files, 0.84 MB",
+        type: "output",
+        element: (
+          <>
+            <span className="text-(--term-cyan)">ℹ</span> Pulled `core/openai`:
+            128 files, 0.84 MB
+          </>
+        ),
       },
     ],
   },
   {
     pauseAfter: 3000,
     lines: [
-      { text: '$ apix pull openai', type: 'input' },
+      { text: "$ apix grep openai completions", type: "input" },
+      { text: "", type: "blank" },
       {
-        text: 'ℹ Pulled `core/openai`: 128 files, 0.84 MB',
-        type: 'info',
-      },
-    ],
-  },
-  {
-    pauseAfter: 3000,
-    lines: [
-      { text: '$ apix grep openai completions', type: 'input' },
-      { text: '', type: 'blank' },
-      {
-        text: 'openai/v1/chat/completions/POST',
-        type: 'output',
-      },
-      {
-        text: '  Create a chat completion with the specified model',
-        type: 'dim',
+        text: "core:openai/v1/chat/completions/POST.md:4: Create a chat completion with the specified model",
+        type: "output",
+        element: (
+          <>
+            <span className="text-(--term-blue)">core</span>:
+            <span className="text-(--term-green) underline">
+              openai/v1/chat/completions/POST.md
+            </span>
+            :<span className="font-bold">4</span>: Create a chat completion with
+            the specified model
+          </>
+        ),
       },
     ],
   },
   {
     pauseAfter: 4000,
     lines: [
-      { text: '$ apix peek openai/v1/chat/completions/POST', type: 'input' },
-      { text: '', type: 'blank' },
-      { text: '---', type: 'dim' },
-      { text: 'method: POST', type: 'output' },
-      { text: 'url: https://api.openai.com/v1/chat/completions', type: 'output' },
-      { text: 'auth: Bearer', type: 'output' },
-      { text: 'content_type: application/json', type: 'output' },
-      { text: '---', type: 'dim' },
-      { text: '', type: 'blank' },
-      { text: '## Required Request Body Fields', type: 'header' },
-      { text: '| Property   | Type     | Description              |', type: 'dim' },
-      { text: '| model      | string   | Model ID (e.g. gpt-4o)   |', type: 'output' },
-      { text: '| messages   | array    | List of message objects   |', type: 'output' },
+      { text: "$ apix peek openai/v1/chat/completions/POST", type: "input" },
+      { text: "", type: "blank" },
+      { text: "---", type: "dim" },
+      { text: "method: POST", type: "output" },
+      {
+        text: "url: https://api.openai.com/v1/chat/completions",
+        type: "output",
+      },
+      { text: "auth: Bearer", type: "output" },
+      { text: "content_type: application/json", type: "output" },
+      { text: "---", type: "dim" },
+      { text: "", type: "blank" },
+      { text: "## Required Request Body Fields", type: "header" },
+      {
+        text: "| Property   | Type     | Description              |",
+        type: "dim",
+      },
+      {
+        text: "| model      | string   | Model ID (e.g. gpt-4o)   |",
+        type: "output",
+      },
+      {
+        text: "| messages   | array    | List of message objects   |",
+        type: "output",
+      },
     ],
   },
   {
     pauseAfter: 2000,
     lines: [
       {
-        text: '$ apix call openai/v1/chat/completions/POST \\',
-        type: 'input',
+        text: "$ apix call openai/v1/chat/completions/POST \\",
+        type: "input",
       },
       {
         text: '    -H "Authorization: Bearer $OPENAI_API_KEY" \\',
-        type: 'input',
+        type: "input",
       },
       {
         text: '    -d \'{"model":"gpt-4o","messages":[{"role":"user","content":"hello"}]}\'',
-        type: 'input',
+        type: "input",
       },
-      { text: '', type: 'blank' },
-      { text: '{', type: 'output' },
-      { text: '  "id": "chatcmpl-abc123",', type: 'output' },
-      { text: '  "object": "chat.completion",', type: 'output' },
-      { text: '  "choices": [{', type: 'output' },
-      { text: '    "message": {', type: 'output' },
-      { text: '      "role": "assistant",', type: 'output' },
-      { text: '      "content": "Hello! How can I help you today?"', type: 'output' },
-      { text: '    }', type: 'output' },
-      { text: '  }]', type: 'output' },
-      { text: '}', type: 'output' },
+      { text: "", type: "blank" },
+      { text: "{", type: "output" },
+      { text: '  "id": "chatcmpl-abc123",', type: "output" },
+      { text: '  "object": "chat.completion",', type: "output" },
+      { text: '  "choices": [{', type: "output" },
+      { text: '    "message": {', type: "output" },
+      { text: '      "role": "assistant",', type: "output" },
+      {
+        text: '      "content": "Hello! How can I help you today?"',
+        type: "output",
+      },
+      { text: "    }", type: "output" },
+      { text: "  }]", type: "output" },
+      { text: "}", type: "output" },
     ],
   },
 ];
@@ -113,7 +163,7 @@ const RESTART_DELAY = 4000;
 export function TerminalDemo() {
   const [displayedLines, setDisplayedLines] = useState<TerminalLine[]>([]);
   const [cursorVisible, setCursorVisible] = useState(true);
-  const [typingText, setTypingText] = useState('');
+  const [typingText, setTypingText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -142,8 +192,11 @@ export function TerminalDemo() {
       } else {
         const el = containerRef.current;
         if (el) {
-          const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 30;
-          setShowScrollIndicator(!atBottom && el.scrollHeight > el.clientHeight);
+          const atBottom =
+            el.scrollHeight - el.scrollTop - el.clientHeight < 30;
+          setShowScrollIndicator(
+            !atBottom && el.scrollHeight > el.clientHeight,
+          );
         }
       }
     });
@@ -168,8 +221,8 @@ export function TerminalDemo() {
       }
     }
 
-    el.addEventListener('scroll', handleScroll);
-    return () => el.removeEventListener('scroll', handleScroll);
+    el.addEventListener("scroll", handleScroll);
+    return () => el.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -198,8 +251,8 @@ export function TerminalDemo() {
       }
       if (cancelled) return;
       setIsTyping(false);
-      setTypingText('');
-      setDisplayedLines((prev) => [...prev, { text, type: 'input' }]);
+      setTypingText("");
+      setDisplayedLines((prev) => [...prev, { text, type: "input" }]);
       scroll();
     }
 
@@ -216,7 +269,7 @@ export function TerminalDemo() {
       while (!cancelled) {
         if (cancelled) return;
         setDisplayedLines([]);
-        setTypingText('');
+        setTypingText("");
         shouldAutoScrollRef.current = true;
         setShowScrollIndicator(false);
 
@@ -225,7 +278,7 @@ export function TerminalDemo() {
 
           const preInputBlanks: TerminalLine[] = [];
           for (const line of step.lines) {
-            if (line.type === 'input') break;
+            if (line.type === "input") break;
             preInputBlanks.push(line);
           }
 
@@ -233,18 +286,18 @@ export function TerminalDemo() {
             await showOutputLines(preInputBlanks);
           }
 
-          const inputLines = step.lines.filter((l) => l.type === 'input');
-          const fullInputText = inputLines.map((l) => l.text).join('\n');
+          const inputLines = step.lines.filter((l) => l.type === "input");
+          const fullInputText = inputLines.map((l) => l.text).join("\n");
           await typeInput(fullInputText);
 
           const afterInput = step.lines.slice(
-            step.lines.findIndex((l) => l.type === 'input')
+            step.lines.findIndex((l) => l.type === "input"),
           );
-          const outputAfterInput = afterInput.filter((l) => l.type !== 'input');
+          const outputAfterInput = afterInput.filter((l) => l.type !== "input");
           await showOutputLines(outputAfterInput);
 
           if (cancelled) return;
-          setDisplayedLines((prev) => [...prev, { text: '', type: 'blank' }]);
+          setDisplayedLines((prev) => [...prev, { text: "", type: "blank" }]);
           scroll();
 
           await sleep(step.pauseAfter);
@@ -262,22 +315,24 @@ export function TerminalDemo() {
     };
   }, []);
 
-  const lineColor = (type: TerminalLine['type']) => {
+  const lineColor = (type: TerminalLine["type"]) => {
     switch (type) {
-      case 'input':
-        return 'text-[var(--term-green)]';
-      case 'output':
-        return 'text-[var(--term-fg)]';
-      case 'info':
-        return 'text-[var(--term-cyan)]';
-      case 'dim':
-        return 'text-[var(--term-dim)]';
-      case 'header':
-        return 'text-[var(--term-yellow)] font-semibold';
-      case 'blank':
-        return '';
+      case "input":
+        return "text-(--term-green)";
+      case "output":
+        return "text-(--term-fg)";
+      case "info":
+        return "text-(--term-cyan)";
+      case "dim":
+        return "text-(--term-dim)";
+      case "header":
+        return "text-(--term-yellow) font-semibold";
+      case "source":
+        return "text-(--term-blue)";
+      case "blank":
+        return "";
       default:
-        return 'text-[var(--term-fg)]';
+        return "text-(--term-fg)";
     }
   };
 
@@ -297,15 +352,15 @@ export function TerminalDemo() {
       >
         {displayedLines.map((line, i) => (
           <div key={i} className={`${lineColor(line.type)} whitespace-pre`}>
-            {line.type === 'blank' ? '\u00A0' : line.text}
+            {line.type === "blank" ? "\u00A0" : line.element || line.text}
           </div>
         ))}
         {isTyping && (
-          <div className={`${lineColor('input')} whitespace-pre`}>
+          <div className={`${lineColor("input")} whitespace-pre`}>
             {typingText}
             <span
               className={`inline-block w-[0.55em] h-[1.1em] bg-(--term-green) align-text-bottom ml-px ${
-                cursorVisible ? 'opacity-100' : 'opacity-0'
+                cursorVisible ? "opacity-100" : "opacity-0"
               }`}
             />
           </div>
@@ -315,7 +370,7 @@ export function TerminalDemo() {
             <span className="text-(--term-dim)">$</span>
             <span
               className={`inline-block w-[0.55em] h-[1.1em] bg-(--term-fg) align-text-bottom ml-1 ${
-                cursorVisible ? 'opacity-100' : 'opacity-0'
+                cursorVisible ? "opacity-100" : "opacity-0"
               }`}
             />
           </div>
