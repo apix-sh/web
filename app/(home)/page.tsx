@@ -20,8 +20,11 @@ export default function HomePage() {
   return (
     <main className="flex flex-col items-center">
       {/* Hero */}
-      <section className="flex flex-col items-center text-center px-6 pt-24 pb-16 max-w-3xl mx-auto gap-6">
-        <pre className="font-mono leading-none select-none" aria-hidden>
+      <section className="flex flex-col items-center text-center px-6 pt-24 pb-20 md:pt-32 md:pb-28 max-w-3xl mx-auto gap-6">
+        <pre
+          className="font-mono leading-none select-none bg-linear-to-br from-fd-foreground to-fd-muted-foreground bg-clip-text text-transparent"
+          aria-hidden
+        >
           {`
  █████╗ ██████╗ ██╗██╗  ██╗
 ██╔══██╗██╔══██╗██║╚██╗██╔╝
@@ -31,13 +34,13 @@ export default function HomePage() {
 ╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝
 `}
         </pre>
-        <h1 className="sr-only text-5xl sm:text-6xl font-bold tracking-tight">
+        <h1 className="sr-only text-5xl sm:text-6xl font-bold tracking-tighter">
           apix
         </h1>
-        <p className="text-xl sm:text-2xl font-medium text-fd-foreground">
+        <p className="text-2xl sm:text-3xl font-medium tracking-tight text-fd-foreground">
           API Explorer for Agents (and Humans)
         </p>
-        <p className="text-fd-muted-foreground text-base max-w-xl">
+        <p className="text-lg text-fd-muted-foreground max-w-[65ch] leading-relaxed mx-auto">
           Local-first, progressive disclosure API discovery and browsing CLI for
           the agentic era.
         </p>
@@ -45,7 +48,7 @@ export default function HomePage() {
         <div className="flex flex-row gap-3 mt-2">
           <Link
             href="/docs"
-            className="inline-flex items-center gap-2 rounded-lg bg-fd-primary px-5 py-2.5 text-sm font-medium text-fd-primary-foreground hover:bg-fd-primary/90 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-fd-primary px-5 py-2.5 text-sm font-medium text-fd-primary-foreground hover:bg-fd-primary/90 active:scale-[0.98] transition-all duration-300 shadow-sm"
           >
             Get Started
           </Link>
@@ -53,7 +56,7 @@ export default function HomePage() {
             href="https://github.com/apix-sh/cli"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 rounded-lg border border-fd-border px-5 py-2.5 text-sm font-medium text-fd-foreground hover:bg-fd-accent transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg border border-fd-border px-5 py-2.5 text-sm font-medium text-fd-foreground hover:bg-fd-accent active:scale-[0.98] transition-all duration-300 shadow-sm"
           >
             GitHub
             <ExternalLink className="size-3.5" />
@@ -73,7 +76,7 @@ export default function HomePage() {
       </section>
 
       {/* Install */}
-      <section className="w-full max-w-3xl mx-auto px-6 py-12">
+      <section className="w-full max-w-3xl mx-auto px-6 py-20 md:py-32">
         <h2 className="text-2xl font-bold mb-6 text-center">Install</h2>
         <Tabs items={["curl", "Homebrew", "Build from source"]}>
           <Tab value="curl">
@@ -188,7 +191,7 @@ export default function HomePage() {
       </section>
 
       {/* Why */}
-      <section className="w-full max-w-3xl mx-auto px-6 py-12">
+      <section className="w-full max-w-3xl mx-auto px-6 py-20 md:py-32">
         <h2 className="text-2xl font-bold mb-3 text-center">Why apix?</h2>
         <p className="text-fd-muted-foreground text-center mb-8 max-w-xl mx-auto">
           API docs today are built for humans browsing the web — not for agents
@@ -221,7 +224,7 @@ export default function HomePage() {
       </section>
 
       {/* How It Works */}
-      <section className="w-full max-w-3xl mx-auto px-6 py-12">
+      <section className="w-full max-w-3xl mx-auto px-6 py-20 md:py-32">
         <h2 className="text-2xl font-bold mb-3 text-center">How It Works</h2>
         <p className="text-fd-muted-foreground text-center mb-8 max-w-xl mx-auto">
           The progressive discovery loop lets agents (and humans) gather context
@@ -302,7 +305,10 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="w-full max-w-3xl mx-auto px-6 py-12 pb-24">
+      <section
+        id="faq"
+        className="w-full max-w-3xl mx-auto px-6 py-20 pb-32 md:py-32 md:pb-40"
+      >
         <h2 className="text-2xl font-bold mb-8 text-center">FAQ</h2>
         <Accordions type="single">
           <Accordion title="What is apix?">
