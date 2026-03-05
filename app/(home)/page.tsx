@@ -356,15 +356,18 @@ export default function HomePage() {
             <code className="bg-fd-secondary px-1.5 py-0.5 rounded text-sm">
               apix import &lt;spec&gt; --name &lt;namespace&gt;
             </code>{" "}
-            to ingest any OpenAPI spec file or URL. The generated vault is
-            stored locally and immediately searchable. You can also contribute
-            to the public registry.
+            to ingest any OpenAPI spec file or URL. You can also host your own
+            API vault in a Git repository and add it as a new source with{" "}
+            <code className="bg-fd-secondary px-1.5 py-0.5 rounded text-sm">
+              apix source add
+            </code>
+            . Private repositories are fully supported via your system's Git
+            authentication.
           </Accordion>
           <Accordion title="Why does it not do X?">
-            apix is in an early stage and actively evolving. We will keep
+            apix is in an early stage and actively evolving. It will keep
             iterating based on real-world usage. If you have suggestions or
-            ideas, we welcome contributions and feedback from the community —
-            open an issue or PR on{" "}
+            ideas, feel free to open an issue or PR on{" "}
             <a
               href="https://github.com/apix-sh/cli"
               target="_blank"

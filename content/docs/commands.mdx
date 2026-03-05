@@ -3,8 +3,8 @@ title: Command Reference
 description: Complete reference for every apix command.
 ---
 
-import { Tabs, Tab } from 'fumadocs-ui/components/tabs';
-import { Callout } from 'fumadocs-ui/components/callout';
+import { Tabs, Tab } from "fumadocs-ui/components/tabs";
+import { Callout } from "fumadocs-ui/components/callout";
 
 ## Discovery
 
@@ -60,10 +60,10 @@ apix pull stripe --source core
 List local inventory — namespaces, versions, or detailed routes.
 
 ```bash
-apix ls [namespace|namespace/version] [--source <name>]
+apix ls [namespace|namespace/version[/path...]] [--source <name>]
 ```
 
-<Tabs items={['Namespaces', 'Versions', 'Routes']}>
+<Tabs items={['Namespaces', 'Versions', 'Routes', 'Filtered']}>
   <Tab value="Namespaces">
     ```bash
     apix ls
@@ -81,6 +81,16 @@ apix ls [namespace|namespace/version] [--source <name>]
     ```
 
     Shows paths and methods with one-line summaries.
+
+  </Tab>
+  <Tab value="Filtered">
+    ```bash
+    apix ls petstore/v1/pet
+    apix ls petstore/v1/store/order
+    ```
+
+    Shows only routes under the given path prefix.
+
   </Tab>
 </Tabs>
 
@@ -106,6 +116,18 @@ apix peek <route> [--source <name>]
 
 ```bash
 apix peek openai/v1/chat/completions/POST
+```
+
+### `apix info`
+
+Print API metadata (frontmatter contents from `_metadata.md`) as a table.
+
+```bash
+apix info <namespace/version> [--source <name>]
+```
+
+```bash
+apix info openai/v1
 ```
 
 ### `apix grep`
@@ -141,6 +163,7 @@ apix call <route> [OPTIONS] [--source <name>]
     ```bash
     apix call petstore/v1/pets/pet_123/GET
     ```
+
   </Tab>
   <Tab value="With flags">
     ```bash
@@ -157,6 +180,7 @@ apix call <route> [OPTIONS] [--source <name>]
     | `-q key=val` | Query parameter |
     | `-H "Header: val"` | HTTP header |
     | `-d '<json>'` | Request body |
+
   </Tab>
   <Tab value="Body from file">
     ```bash
@@ -168,6 +192,7 @@ apix call <route> [OPTIONS] [--source <name>]
     ```bash
     echo '{"name":"item"}' | apix call demo/v1/items/POST -d @-
     ```
+
   </Tab>
 </Tabs>
 
@@ -228,8 +253,8 @@ apix completions <bash|zsh|fish|elvish|powershell>
   consumption.
 </Callout>
 
-| Flag | Description |
-| :--- | :--- |
-| `--raw` | Force raw markdown in TTY mode |
+| Flag         | Description                              |
+| :----------- | :--------------------------------------- |
+| `--raw`      | Force raw markdown in TTY mode           |
 | `--no-color` | Disable color output (also `NO_COLOR=1`) |
-| `--no-pager` | Disable automatic paging |
+| `--no-pager` | Disable automatic paging                 |

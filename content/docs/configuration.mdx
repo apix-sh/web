@@ -3,7 +3,7 @@ title: Configuration
 description: Customize apix behavior, sources, and environment variables.
 ---
 
-import { Callout } from 'fumadocs-ui/components/callout';
+import { Callout } from "fumadocs-ui/components/callout";
 
 ## Config File
 
@@ -22,14 +22,14 @@ remote = "https://github.com/apix-sh/vault.git"
 
 ## Options
 
-| Key | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `color` | bool | `true` | Enable colored output |
-| `pager` | string | `""` | Custom pager command (fallback: `less -FRX`) |
-| `auto_update` | bool | `true` | Auto-refresh registry on search |
-| `auto_update_ttl_seconds` | int | `21600` | Seconds between auto-updates (0 disables) |
-| `sources` | list | `[".local", "core"]` | Source priority order |
-| `registry.remote` | string | GitHub vault URL | Default registry remote |
+| Key                       | Type   | Default              | Description                                  |
+| :------------------------ | :----- | :------------------- | :------------------------------------------- |
+| `color`                   | bool   | `true`               | Enable colored output                        |
+| `pager`                   | string | `""`                 | Custom pager command (fallback: `less -FRX`) |
+| `auto_update`             | bool   | `true`               | Auto-refresh registry on search              |
+| `auto_update_ttl_seconds` | int    | `21600`              | Seconds between auto-updates (0 disables)    |
+| `sources`                 | list   | `[".local", "core"]` | Source priority order                        |
+| `registry.remote`         | string | GitHub vault URL     | Default registry remote                      |
 
 ## Adding Third-Party Sources
 
@@ -46,6 +46,13 @@ Then update your source priority:
 sources = [".local", "core", "acme"]
 ```
 
+<Callout title="Private Repositories">
+  apix uses your system's `git` command for all vault operations. This means it
+  automatically inherits your local Git authentication (SSH keys, credential
+  managers, or tokens). You can maintain and use private API vaults as long as
+  your local Git has the rights to access them.
+</Callout>
+
 Or manage sources with the CLI:
 
 ```bash
@@ -57,15 +64,15 @@ apix source list
 
 Environment variables override their config file counterparts:
 
-| Variable | Overrides | Description |
-| :--- | :--- | :--- |
-| `APIX_HOME` | `~/.apix` | Home directory path |
-| `APIX_REGISTRY_URL` | `registry.remote` | Default registry remote URL |
-| `APIX_AUTO_UPDATE` | `auto_update` | Enable/disable auto-update |
-| `APIX_AUTO_UPDATE_TTL_SECONDS` | `auto_update_ttl_seconds` | Auto-update interval |
-| `APIX_SOURCES` | `sources` | Comma-separated source priority |
-| `NO_COLOR` | `color` | Disable color output |
-| `PAGER` | `pager` | Pager command |
+| Variable                       | Overrides                 | Description                     |
+| :----------------------------- | :------------------------ | :------------------------------ |
+| `APIX_HOME`                    | `~/.apix`                 | Home directory path             |
+| `APIX_REGISTRY_URL`            | `registry.remote`         | Default registry remote URL     |
+| `APIX_AUTO_UPDATE`             | `auto_update`             | Enable/disable auto-update      |
+| `APIX_AUTO_UPDATE_TTL_SECONDS` | `auto_update_ttl_seconds` | Auto-update interval            |
+| `APIX_SOURCES`                 | `sources`                 | Comma-separated source priority |
+| `NO_COLOR`                     | `color`                   | Disable color output            |
+| `PAGER`                        | `pager`                   | Pager command                   |
 
 <Callout title="Stateless by design">
   apix does not store global HTTP state, default headers, or credentials in the

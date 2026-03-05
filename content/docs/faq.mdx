@@ -1,0 +1,65 @@
+---
+title: FAQ
+description: Frequently asked questions about apix.
+---
+
+import { Callout } from "fumadocs-ui/components/callout";
+
+## What is apix?
+
+apix is a Rust CLI that converts monolithic OpenAPI specs into a file-system-native markdown vault. It lets you discover, browse, search, and call APIs from your terminal, and is designed for both AI agents and humans.
+
+## How is this different from just reading OpenAPI specs?
+
+Raw OpenAPI JSON/YAML files are often thousands of lines long. They flood LLM context windows and degrade reasoning quality. apix breaks specs into individual, token-optimized markdown files with progressive disclosure — agents only load what they need.
+
+## Does apix work with any API?
+
+apix supports OpenAPI 3.0 and 3.1 specifications. You can import any conforming spec with `apix import`. The public registry ships with curated specs for popular APIs like Stripe, OpenAI, GitHub, and more.
+
+## Can I use apix with AI agents like Claude or GPT?
+
+Yes. apix is specifically designed for agent-native workflows. Piped output is raw markdown. Agents can use standard tool-use patterns: search → peek → call. The progressive disclosure loop keeps token usage minimal.
+
+## Is my API data sent anywhere?
+
+No. apix is entirely local-first. Vault data lives on your filesystem at `~/.apix/vaults/`. The only network calls are Git fetches from the registry and your own API calls via `apix call`.
+
+## How do I add my own API?
+
+You can add your own APIs in two ways:
+
+1.  **Import to `.local`**: Use the `apix import` command to convert an OpenAPI spec into markdown files. These will be stored in your local `~/.apix/vaults/.local/` directory and available immediately.
+
+    ```bash
+    apix import ./petstore.json --name petstore
+    ```
+
+2.  **Create a custom registry**: You can maintain your own API "vault" repository. Just add it as a new source:
+
+    ```bash
+    apix source add acme --remote https://github.com/acme/apix-vaults.git
+    ```
+
+<Callout title="3rd Party Registries & Private Repos">
+  apix fully supports third-party registries, even private ones. Because it uses
+  your system's Git, as long as your local environment has the right
+  authentication (SSH keys, tokens, etc.), you can maintain and use private API
+  vaults.
+</Callout>
+
+## Where are vault files stored?
+
+By default, all vault files are stored in `~/.apix/vaults/`. Each source gets its own subdirectory:
+
+- `.local/` — APIs imported locally.
+- `core/` — The official curated registry.
+- `<custom-source>/` — Any third-party repositories you've added.
+
+## Does apix store my API keys?
+
+No. apix is designed to be **stateless**. It does not store global HTTP state, default headers, or credentials. This ensures predictable, side-effect-free execution for both agents and humans. Authentication must be provided explicitly to each `apix call` invocation (usually via a `-H "Authorization: Bearer $TOKEN"` flag).
+
+## Why does it not do X?
+
+apix is in an early stage and actively evolving. If you'd like to contribute or give feedback, please open an issue or PR on [GitHub](https://github.com/apix-sh/cli).
