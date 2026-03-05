@@ -4,7 +4,7 @@ set -eu
 REPO="${APIX_INSTALL_REPO:-apix-sh/cli}"
 BIN_NAME="apix"
 BIN_DIR="${APIX_INSTALL_BIN_DIR:-$HOME/.local/bin}"
-VERSION="v0.1.4" # x-release-update
+VERSION="v0.1.5" # x-release-update
 
 usage() {
   cat <<EOF
